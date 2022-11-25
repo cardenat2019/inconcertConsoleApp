@@ -12,7 +12,7 @@ namespace ConsoleApp.Utils
         public const string TipoStatus_1_NoContacto  = "No Contacto";
         public const string TipoStatus_1_Contactado  = "Contactado";
         public const string TipoStatus_2_Reprogramar = "Reprogramar";
-        public const string TipoStatus_2_NoDefine    = "No Define";
+        public const string TipoStatus_2_NoDefine    = "No define";
         public const string TipoStatus_2_Negativa    = "Negativa";
         public const string TipoStatus_2_Salida      = "Salida";
         public const string TipoStatus_2_MensajeConTerceros = "Mensaje con Terceros";
@@ -29,14 +29,14 @@ namespace ConsoleApp.Utils
         public const string Tipificacion_NoSeQueEstudiar = "No sé qué estudiar";
         public const string Tipificacion_NoEstoyListoVoyAPensar = "No estoy listo / Lo voy a pensar";
         public const string Tipificacion_RevisandoConPapasOfamiliares = "Revisando con papás o familiares";
-        public const string Tipificacion_EnEsperaResultados = "En espera de resultados";
+        public const string Tipificacion_EnEsperaResultados = "En espera de resultados de la pública";
         public const string Tipificacion_EvaluandoOtrasUniversidadesProgramas = "Evaluando otras universidades/programas";
         public const string Tipificacion_EvaluandoTemasEconomicos = "Evaluando por temas económicos";
         public const string Tipificacion_CambioCiclo = "Cambio de ciclo";
         public const string Tipificacion_LejaniaCampus = "Lejanía del campus";
         public const string Tipificacion_NoSolicitoInformacion = "No solicitó información";
         public const string Tipificacion_HorariosClasesNoCompatibles = "Horarios de clases no compatibles";
-        public const string Tipificacion_NoExisteProgramaEnCampus = "No existe programa en el Campus";
+        public const string Tipificacion_NoExisteProgramaEnCampus = "No existe el programa en el Campus";
         public const string Tipificacion_NoExisteOfertaAcademicaAliat = "No existe oferta académica en Aliat";
         public const string Tipificacion_InscritoEscuelaPrivada = "Inscrito en escuela privada";
         public const string Tipificacion_InscritoEscuelaPublica = "Inscrito en escuela pública";

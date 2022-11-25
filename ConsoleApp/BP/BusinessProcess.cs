@@ -54,8 +54,8 @@ namespace ConsoleApp.BP
                         clientData.Id = Int32.Parse(reader[0].ToString());
                         clientData.VCC = reader[1].ToString();
                         clientData.Campaign = reader[2].ToString();
-                        //clientData.StartDateTime = reader[2].ToString();
-                        //clientData.EndDateTime   = reader[3].ToString();
+                        //clientData.StartDateTime = reader[3].ToString();
+                        //clientData.EndDateTime   = reader[4].ToString();
                         clientData.StartDateTime = Convert.ToDateTime(reader[3].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
                         clientData.EndDateTime = Convert.ToDateTime(reader[4].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -170,11 +170,34 @@ namespace ConsoleApp.BP
         {
             List<BaseDataPost> dataPosts = new List<BaseDataPost>();
             List<BaseDataPostContact> dataPostContacts = new List<BaseDataPostContact>();
+            //int contador = 0;
             foreach (var valorResultado in valoresResultados)
             {
                 List<AdditionalDataPost> additionalDataPost = new List<AdditionalDataPost>();
                 AdditionalDataPost adp = new AdditionalDataPost();
 
+                //contador++;
+
+                //if(valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto)&&
+                //   valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_Negativa)&&
+                //   valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoExisteProgramaEnCampus)){
+                //    Console.WriteLine("Contador: " + contador);
+                //    Console.WriteLine(Constants.Tipificacion_NoExisteProgramaEnCampus);
+                //}
+                //if (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
+                //   valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine) &&
+                //   (valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoEstoyListoVoyAPensar) ||
+                //   valorResultado.Tipificacion.Equals(Constants.Tipificacion_EnEsperaResultados)))
+                //{
+                //    Console.WriteLine("Contador: " + contador);
+                //    Console.WriteLine(valorResultado.Tipificacion);
+                //}
+
+                //if (valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoEstoyListoVoyAPensar))
+                //{
+                //    Console.WriteLine("Contador: " + contador);
+                //    Console.WriteLine(valorResultado.Tipificacion);
+                //}
 
                 if (
                     // ID-001. Estatus_1: No contactado, Estatus_2: null, Tipificaciones: Buzón de Voz, Campos adicionales: null
@@ -215,7 +238,7 @@ namespace ConsoleApp.BP
                      valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_Salida) &&
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_InscritoAliat)) ||
                     // ID – 006 Tipificacion Contactado, Mensaje con terceros
-                    (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contactado) &&
+                    (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
                      valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_MensajeConTerceros) &&
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_SinContactoConInteresado)) ||
                     (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_NoContacto) &&
@@ -271,7 +294,7 @@ namespace ConsoleApp.BP
                     AdditionalDataPost adp2 = new AdditionalDataPost();
                     adp2.Campo = "¿Cuánto puede pagar?";
                     adp2.Valor = "100.00";
-                    additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd hh:mm")));
+                    //additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd hh:mm")));
                     additionalDataPost.Add(setAdditionalDataPost("¿Cuánto puede pagar?", "100.00"));
                 }
 
@@ -630,7 +653,7 @@ namespace ConsoleApp.BP
         }
         public static void addLogErrors(string method, string errorDescription)
         {
-            DateTime hoy = new DateTime().Date;
+            DateTime hoy = DateTime.Now.Date;
             try
             {
                 using (SqlConnection connection = new SqlConnection(Config.ConnectionString()))
