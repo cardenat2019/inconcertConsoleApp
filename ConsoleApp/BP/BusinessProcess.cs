@@ -176,29 +176,6 @@ namespace ConsoleApp.BP
                 List<AdditionalDataPost> additionalDataPost = new List<AdditionalDataPost>();
                 AdditionalDataPost adp = new AdditionalDataPost();
 
-                //contador++;
-
-                //if(valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto)&&
-                //   valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_Negativa)&&
-                //   valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoExisteProgramaEnCampus)){
-                //    Console.WriteLine("Contador: " + contador);
-                //    Console.WriteLine(Constants.Tipificacion_NoExisteProgramaEnCampus);
-                //}
-                //if (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
-                //   valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine) &&
-                //   (valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoEstoyListoVoyAPensar) ||
-                //   valorResultado.Tipificacion.Equals(Constants.Tipificacion_EnEsperaResultados)))
-                //{
-                //    Console.WriteLine("Contador: " + contador);
-                //    Console.WriteLine(valorResultado.Tipificacion);
-                //}
-
-                //if (valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoEstoyListoVoyAPensar))
-                //{
-                //    Console.WriteLine("Contador: " + contador);
-                //    Console.WriteLine(valorResultado.Tipificacion);
-                //}
-
                 if (
                     // ID-001. Estatus_1: No contactado, Estatus_2: null, Tipificaciones: Buzón de Voz, Campos adicionales: null
                     (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_NoContacto) &&
@@ -265,11 +242,10 @@ namespace ConsoleApp.BP
                      valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine) &&
                      (valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoSeQueEstudiar) || // ID-010 *Tipificaciones: No sé qué estudiar *Campos adicionales: Fecha de seguimiento
                        valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoEstoyListoVoyAPensar) || // ID-011 *Tipificaciones: No estoy listo / Lo voy a pensar *Campos adicionales: Fecha de seguimiento
-                       valorResultado.Tipificacion.Equals(Constants.Tipificacion_RevisandoConPapasOfamiliares))) || // ID-012 *Tipificaciones: Revisando con papás o familiares *Campos adicionales: Fecha de seguimiento
-                    // ID–015 Tipificacion En espera de resultados
-                    (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
-                     valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine) &&
-                     valorResultado.Tipificacion.Equals(Constants.Tipificacion_EvaluandoTemasEconomicos))
+                       valorResultado.Tipificacion.Equals(Constants.Tipificacion_RevisandoConPapasOfamiliares) || // ID-012 *Tipificaciones: Revisando con papás o familiares *Campos adicionales: Fecha de seguimiento
+                       valorResultado.Tipificacion.Equals(Constants.Tipificacion_EvaluandoTemasEconomicos) || // ID–013 Evaluando temas economicos
+                       valorResultado.Tipificacion.Equals(Constants.Tipificacion_EvaluandoOtrasUniversidadesProgramas) || // ID-014 Evaluando otras universidades Programas)))  
+                       valorResultado.Tipificacion.Equals(Constants.Tipificacion_EnEsperaResultados))) // ID–015 Tipificacion En espera de resultados
                    )
                 {
                     additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd hh:mm")));
@@ -281,7 +257,6 @@ namespace ConsoleApp.BP
                     (valorResultado.Tipificacion.Equals(Constants.Tipificacion_EnEsperaResultados) ||
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_EvaluandoOtrasUniversidadesProgramas)))
                 {
-                    additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd hh:mm")));
                     additionalDataPost.Add(setAdditionalDataPost("¿Qué universidad/Programa?", valorResultado.ProgramaInteres));
                 }
 
@@ -294,7 +269,6 @@ namespace ConsoleApp.BP
                     AdditionalDataPost adp2 = new AdditionalDataPost();
                     adp2.Campo = "¿Cuánto puede pagar?";
                     adp2.Valor = "100.00";
-                    //additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd hh:mm")));
                     additionalDataPost.Add(setAdditionalDataPost("¿Cuánto puede pagar?", "100.00"));
                 }
 
@@ -380,6 +354,14 @@ namespace ConsoleApp.BP
                 dataPost.Tipificacion.Equals(Constants.Tipificacion_HorariosClasesNoCompatibles)))
             {
                 dataPost.Tipificacion = "Horarios de clases no compatibles de clases";
+            }
+            if ((dataPost.Estatus1.Equals(Constants.TipoStatus_1_Contacto) &&
+                 dataPost.Estatus2.Equals(Constants.TipoStatus_2_MensajeConTerceros) &&
+                 dataPost.Tipificacion.Equals(Constants.Tipificacion_SinContactoConInteresado)))
+            {
+                dataPost.Estatus1 = "No contactado";
+                dataPost.Estatus2 = null;
+                dataPost.Tipificacion = "Número equivocado";
             }
             return dataPost;
         }
