@@ -55,7 +55,7 @@ namespace ConsoleApp.BP
                         clientData.VCC = reader[1].ToString();
                         clientData.Campaign = reader[2].ToString();
                         clientData.StartDateTime = reader[3].ToString();
-                        clientData.EndDateTime   = reader[4].ToString();
+                        clientData.EndDateTime = reader[4].ToString();
                         //clientData.StartDateTime = Convert.ToDateTime(reader[3].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
                         //clientData.EndDateTime = Convert.ToDateTime(reader[4].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
 
@@ -66,7 +66,7 @@ namespace ConsoleApp.BP
             catch (Exception ex)
             {
                 //Console.WriteLine("Error trayendo registro de TipificacionProcess", ex);
-                addLogErrors("getClientData", ex.Message);
+                addLogErrors("getClientData", ex.Message, null, null, null);
                 //throw;
             }
 
@@ -93,11 +93,11 @@ namespace ConsoleApp.BP
                     {
                         EntityValue entityValue = new EntityValue();
 
-                        entityValue.Id       = Int32.Parse(reader[0].ToString());
+                        entityValue.Id = Int32.Parse(reader[0].ToString());
                         entityValue.EntityId = Int32.Parse(reader[1].ToString());
-                        entityValue.Code     = reader[2].ToString();
-                        entityValue.Name     = reader[3].ToString();
-                        entityValue.Estatus  = Boolean.Parse(reader[4].ToString())?1:0;
+                        entityValue.Code = reader[2].ToString();
+                        entityValue.Name = reader[3].ToString();
+                        entityValue.Estatus = Boolean.Parse(reader[4].ToString()) ? 1 : 0;
 
                         entityValueList.Add(entityValue);
                     }
@@ -106,7 +106,7 @@ namespace ConsoleApp.BP
             catch (Exception ex)
             {
                 //Console.WriteLine("Error trayendo registro de Entidades de Datos", ex);
-                addLogErrors("getClientData", ex.Message);
+                addLogErrors("getEntityValues", ex.Message);
                 //throw;
             }
 
@@ -187,7 +187,7 @@ namespace ConsoleApp.BP
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_NumeroSuspendidoFueraServicio) || // ID-003. Tipificaciones: Número suspendido / Fuera de servicio 
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_SeCaeLlamadaEnMarcacion) || // ID-004. Tipificaciones: Se cae la llamada en marcación 
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_TelefonoOcupado))) || // ID-005. Tipificaciones: Tipificaciones: Teléfono Ocupado 
-                    // ID-009. *Estatus 1: Contactado *Estatus_2: Reprogramar *Tipificaciones: Problemas de audio durante la llamada *Campos adicionales: null
+                                                                                                     // ID-009. *Estatus 1: Contactado *Estatus_2: Reprogramar *Tipificaciones: Problemas de audio durante la llamada *Campos adicionales: null
                     (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
                      valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_Reprogramar) &&
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_ProblemasAudioEnLLamada)) ||
@@ -229,7 +229,7 @@ namespace ConsoleApp.BP
                 if (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
                     valorResultado.Tipificacion.Equals(Constants.Tipificacion_Cita))
                 {
-                    additionalDataPost.Add(setAdditionalDataPost("Fecha y hora de cita", valorResultado.CuandoAsiste.ToString("yyyy/MM/dd hh:mm")));
+                    additionalDataPost.Add(setAdditionalDataPost("Fecha y hora de cita", valorResultado.CuandoAsiste.ToString("yyyy/MM/dd HH:mm")));
                 }
 
                 if (
@@ -238,8 +238,8 @@ namespace ConsoleApp.BP
                      valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_Reprogramar) &&
                      valorResultado.Tipificacion.Equals(Constants.Tipificacion_ClientePideVolverALlamar)) ||
                     // ID–010, ID-011, ID-012 *Estatus 1: Contactado* Estatus_2: No define 
-                    (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) && 
-                     valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine) &&
+                    (valorResultado.Estatus_1.Equals(Constants.TipoStatus_1_Contacto) &&
+                     (valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine) || valorResultado.Estatus_2.Equals(Constants.TipoStatus_2_NoDefine2)) &&
                      (valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoSeQueEstudiar) || // ID-010 *Tipificaciones: No sé qué estudiar *Campos adicionales: Fecha de seguimiento
                        valorResultado.Tipificacion.Equals(Constants.Tipificacion_NoEstoyListoVoyAPensar) || // ID-011 *Tipificaciones: No estoy listo / Lo voy a pensar *Campos adicionales: Fecha de seguimiento
                        valorResultado.Tipificacion.Equals(Constants.Tipificacion_RevisandoConPapasOfamiliares) || // ID-012 *Tipificaciones: Revisando con papás o familiares *Campos adicionales: Fecha de seguimiento
@@ -248,7 +248,7 @@ namespace ConsoleApp.BP
                        valorResultado.Tipificacion.Equals(Constants.Tipificacion_EnEsperaResultados))) // ID–015 Tipificacion En espera de resultados
                    )
                 {
-                    additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd hh:mm")));
+                    additionalDataPost.Add(setAdditionalDataPost("Fecha de seguimiento", valorResultado.scheduledDate.ToString("yyyy/MM/dd HH:mm")));
                 }
 
                 // ID – 013, 014 tipificacion En espera de resultados
@@ -278,7 +278,7 @@ namespace ConsoleApp.BP
                     valorResultado.Tipificacion.Equals(Constants.Tipificacion_HorariosClasesNoCompatibles)
                    )
                 {
-                    additionalDataPost.Add(setAdditionalDataPost("¿Cuándo puede asistir a clases?", valorResultado.CuandoAsiste.ToString("yyyy/MM/dd hh:mm")));
+                    additionalDataPost.Add(setAdditionalDataPost("¿Cuándo puede asistir a clases?", valorResultado.CuandoAsiste.ToString("yyyy/MM/dd HH:mm")));
                 }
 
                 // ID – 019, 020 Tipificacion Horarios de clases no compatibles de clases
@@ -340,20 +340,20 @@ namespace ConsoleApp.BP
         // Método para hacer Validaciones adicionales en Datapost
         public static BaseDataPost additionalValidationsBaseDataPost(BaseDataPost dataPost)
         {
+
             //Organizo valor default ws enviar en json
-            if (dataPost.Estatus1.Equals(Constants.TipoStatus_1_NoContacto))
-            {
-                dataPost.Estatus1 = "No contactado";
-            }
-            if (dataPost.Estatus1.Equals(Constants.TipoStatus_1_Contacto))
-            {
-                dataPost.Estatus1 = "Contactado";
-            }
+
             if ((dataPost.Estatus1.Equals(Constants.TipoStatus_1_Contacto) &&
                 dataPost.Estatus2.Equals(Constants.TipoStatus_2_Negativa) &&
                 dataPost.Tipificacion.Equals(Constants.Tipificacion_HorariosClasesNoCompatibles)))
             {
-                dataPost.Tipificacion = "Horarios de clases no compatibles de clases";
+                dataPost.Tipificacion = "Horarios de clases no compatibles";
+            }
+            if ((dataPost.Estatus1.Equals(Constants.TipoStatus_1_Contacto) &&
+                dataPost.Estatus2.Equals(Constants.TipoStatus_2_Negativa) &&
+                dataPost.Tipificacion.Equals(Constants.Tipificacion_NoExisteProgramaEnCampus)))
+            {
+                dataPost.Tipificacion = "No existe programa en el Campus";
             }
             if ((dataPost.Estatus1.Equals(Constants.TipoStatus_1_Contacto) &&
                  dataPost.Estatus2.Equals(Constants.TipoStatus_2_MensajeConTerceros) &&
@@ -362,6 +362,18 @@ namespace ConsoleApp.BP
                 dataPost.Estatus1 = "No contactado";
                 dataPost.Estatus2 = null;
                 dataPost.Tipificacion = "Número equivocado";
+            }
+            if (dataPost.Estatus1.Equals(Constants.TipoStatus_1_NoContacto))
+            {
+                dataPost.Estatus1 = "No contactado";
+            }
+            if (dataPost.Estatus1.Equals(Constants.TipoStatus_1_Contacto))
+            {
+                dataPost.Estatus1 = "Contactado";
+            }
+            if (!string.IsNullOrEmpty(dataPost.Estatus2) && dataPost.Estatus2.Equals(Constants.TipoStatus_2_NoDefine))
+            {
+                dataPost.Estatus2 = "No define";
             }
             return dataPost;
         }
@@ -378,11 +390,11 @@ namespace ConsoleApp.BP
         {
             BaseDataPost bdp = new BaseDataPost();
 
-            if(additionalDataPosts[0] == null) additionalDataPosts = null;
+            if (additionalDataPosts[0] == null) additionalDataPosts = null;
 
             bdp.IdOportunidad = br.IdOportunidad;
             bdp.TotalLlamadas = br.TotalLlamadas.ToString();
-            bdp.FechaLlamada = br.FechaLlamada.ToShortDateString();
+            bdp.FechaLlamada = br.FechaLlamada.ToString("yyyy/MM/dd HH:mm");
             bdp.Estatus1 = br.Estatus_1;
             bdp.Estatus2 = br.Estatus_2;
             bdp.Tipificacion = br.Tipificacion;
@@ -396,7 +408,7 @@ namespace ConsoleApp.BP
         {
             BaseDataPostContact bdp = new BaseDataPostContact();
 
-            bdp.ContactId     = br.IdContacto;
+            bdp.ContactId = br.IdContacto;
             bdp.IdOportunidad = br.IdOportunidad;
 
             return bdp;
@@ -418,14 +430,14 @@ namespace ConsoleApp.BP
                     cmd.Parameters.AddWithValue("@Estatus1", valorResultado.Estatus_1);
                     cmd.Parameters.AddWithValue("@Estatus2", valorResultado.Estatus_2);
                     cmd.Parameters.AddWithValue("@Tipificacion", valorResultado.Tipificacion);
-                    
+
                     cmd.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
                 //Console.WriteLine("Error al incluir registro en LogWsTipificacion: ", e);
-                addLogErrors("addLogNoApply", ex.Message);
+                addLogErrors("addLogNoApply", ex.Message, valorResultado.Campana, valorResultado.IdContacto, valorResultado.IdOportunidad);
             }
         }
         // Método que permite incluir los registros de los LOGS por cada tipificación
@@ -442,7 +454,7 @@ namespace ConsoleApp.BP
                     cmd.Parameters.AddWithValue("@FechaEnvioWS", DateTime.Now);
                     cmd.Parameters.AddWithValue("@TipoPost", "POST");
                     cmd.Parameters.AddWithValue("@IdOportunidad", baseDataPost.IdOportunidad);
-                    cmd.Parameters.AddWithValue("@FechaLlamada", Convert.ToDateTime(baseDataPost.FechaLlamada).ToString("yyyy-MM-dd hh:mm"));
+                    cmd.Parameters.AddWithValue("@FechaLlamada", Convert.ToDateTime(baseDataPost.FechaLlamada).ToString("yyyy-MM-dd HH:mm"));
                     cmd.Parameters.AddWithValue("@Llamadas", baseDataPost.TotalLlamadas);
                     cmd.Parameters.AddWithValue("@Estatus_1", baseDataPost.Estatus1);
                     cmd.Parameters.AddWithValue("@Estatus_2", baseDataPost.Estatus2);
@@ -464,7 +476,7 @@ namespace ConsoleApp.BP
             catch (Exception ex)
             {
                 //Console.WriteLine("Error al incluir registro en LogWsTipificacion: ", e);
-                addLogErrors("addLogWsTipificacion", ex.Message);
+                addLogErrors("addLogWsTipificacion", ex.Message, cd, bdpc.ContactId, baseDataPost.IdOportunidad);
             }
         }
         // Método que permite incluir los registros de los contactos por fecha
@@ -486,7 +498,7 @@ namespace ConsoleApp.BP
             catch (SqlException ex)
             {
                 //Console.WriteLine("Error al incluir registro en ControlEnvioWS: ", e);
-                addLogErrors("addControlEnvioWS", ex.Message);
+                addLogErrors("addControlEnvioWS", ex.Message, null, contactId);
             }
         }
         private static void updateProcessDateTipification(int id)
@@ -539,7 +551,7 @@ namespace ConsoleApp.BP
 
                             if (!string.IsNullOrEmpty(iDataPost.FechaLlamada.ToString()))
                             {
-                                string dtt = Convert.ToDateTime(iDataPost.FechaLlamada).ToString("yyyy/MM/dd hh:mm");
+                                string dtt = Convert.ToDateTime(iDataPost.FechaLlamada).ToString("yyyy/MM/dd HH:mm");
 
                                 iDataPost.FechaLlamada = dtt;
                             }
@@ -555,7 +567,7 @@ namespace ConsoleApp.BP
 
                             int retryCounter = 0;
 
-                            while (retryCounter<Constants.RetriesSendingData)
+                            while (retryCounter < Constants.RetriesSendingData)
                             {
                                 retryCounter++;
 
@@ -563,38 +575,47 @@ namespace ConsoleApp.BP
 
                                 string responseBody = await response.Content.ReadAsStringAsync();
 
+                                //Console.WriteLine("IdOportunidad: " + iDataPost.IdOportunidad);
+
+                                //if (iDataPost.IdOportunidad.Equals("Oportunidad-3260525"))
+                                //{
+                                //    Console.WriteLine("IdOportunidad: " + iDataPost.IdOportunidad);
+                                //}
+
                                 // Deserializa la respuesta del servicio
                                 responseService = JsonConvert.DeserializeObject<ResponseService>(responseBody);
                                 BaseDataPostContact dpc = dataPostContacts.Find(m => m.IdOportunidad == dataPost[0].IdOportunidad);
                                 ValoresResultados vr = valoresResultados.Find(m => m.IdOportunidad == dataPost[0].IdOportunidad);
 
+                                
+
                                 string message = "";
 
-                                if(responseService.Mensaje.Equals("No hay Oportunidades a Procesar.")) retryCounter = 3;
+                                if (responseService.Mensaje.Equals("No hay Oportunidades a Procesar.")) retryCounter = 3;
 
                                 if (response.IsSuccessStatusCode)
                                 {
-                                    if (!string.IsNullOrEmpty( responseService.Detalles.ToString()))
+                                    if (!string.IsNullOrEmpty(responseService.Detalles.ToString()))
                                     {
-                                         message = "Mensaje: " + responseService.Mensaje + " ID: " + dataPost[0].IdOportunidad + " Detalle: " + responseService.Detalles[0].Mensaje;
+                                        message = "Mensaje: " + responseService.Mensaje + " ID: " + dataPost[0].IdOportunidad + " Detalle: " + responseService.Detalles[0].Mensaje;
                                     }
                                     else
                                     {
-                                         message = "Mensaje: " + responseService.Mensaje + " ID: " + dataPost[0].IdOportunidad + " Detalle: " + responseService.Detalles;
+                                        message = "Mensaje: " + responseService.Mensaje + " ID: " + dataPost[0].IdOportunidad + " Detalle: " + responseService.Detalles;
                                     }
-                                
+
                                     Log(message, clientData, mailConfigList[0].LogFileName);
                                     // Adiciona los registros de LOG y Control de Envio WS si es satisfactoria la actualización
-                                
+
                                     addLogWsTipificacion(dataPost[0], responseService, dpc, clientData.Campaign, vr);
-                                    addControlEnvioWS(getContactId(dataPost[0].IdOportunidad, dataPostContacts), clientData.StartDateTime.Substring(0,10));
+                                    addControlEnvioWS(getContactId(dataPost[0].IdOportunidad, dataPostContacts), clientData.StartDateTime.Substring(0, 10));
                                     retryCounter = 3;
                                 }
                                 else
                                 {
-                                    if(responseService.Detalles==null)
+                                    if (responseService.Detalles == null)
                                     {
-                                        message = "Mensaje: " + (responseService.Mensaje != null ? responseService.Mensaje : "No tiene mensaje")+
+                                        message = "Mensaje: " + (responseService.Mensaje != null ? responseService.Mensaje : "No tiene mensaje") +
                                                   " ID: " + dataPost[0].IdOportunidad + " Detalle: No tiene detalle";
                                         responseService.Detalles = new List<ResponseServiceDetail>();
                                     }
@@ -614,19 +635,19 @@ namespace ConsoleApp.BP
                     }
                     catch (InvalidOperationException ex)
                     {
-                        addLogErrors("apiPost", ex.Message);
+                        addLogErrors("apiPost", ex.Message, clientData.Campaign);
                     }
                     catch (HttpRequestException ex)
                     {
-                        addLogErrors("apiPost", ex.Message);
+                        addLogErrors("apiPost", ex.Message, clientData.Campaign);
                     }
                     catch (TaskCanceledException ex)
                     {
-                        addLogErrors("apiPost", ex.Message);
+                        addLogErrors("apiPost", ex.Message, clientData.Campaign);
                     }
                     catch (UriFormatException ex)
                     {
-                        addLogErrors("apiPost", ex.Message);
+                        addLogErrors("apiPost", ex.Message, clientData.Campaign);
                     }
                 }
             }
@@ -635,7 +656,7 @@ namespace ConsoleApp.BP
                 addLogErrors("apiPost", ex.Message);
             }
         }
-        public static void addLogErrors(string method, string errorDescription)
+        public static void addLogErrors(string method, string errorDescription, string campaign = null, string contactId = null, string idOportunidad = null)
         {
             DateTime hoy = DateTime.Now.Date;
             try
@@ -649,6 +670,9 @@ namespace ConsoleApp.BP
                     cmd.Parameters.AddWithValue("@dateLog", hoy);
                     cmd.Parameters.AddWithValue("@method", method);
                     cmd.Parameters.AddWithValue("@errorDescription", errorDescription);
+                    cmd.Parameters.AddWithValue("@campaign", campaign);
+                    cmd.Parameters.AddWithValue("@contactid", contactId);
+                    cmd.Parameters.AddWithValue("@idoportunidad", idOportunidad);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -685,7 +709,7 @@ namespace ConsoleApp.BP
         // Método para sustituir las variables que están en el Subject del mensaje, o para el nombre del archivo LOG
         public static string makeTextFileName(string fileName, string campaign, string date)
         {
-            string filename = fileName.Replace("&campaign", campaign).Replace("&processDate", date.Substring(0,10)).Replace("/", "-");
+            string filename = fileName.Replace("&campaign", campaign).Replace("&processDate", date.Substring(0, 10)).Replace("/", "-");
             return filename;
         }
         // Método para enviar los archivos LOG por correo a los destinatarios
