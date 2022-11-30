@@ -54,10 +54,10 @@ namespace ConsoleApp.BP
                         clientData.Id = Int32.Parse(reader[0].ToString());
                         clientData.VCC = reader[1].ToString();
                         clientData.Campaign = reader[2].ToString();
-                        clientData.StartDateTime = reader[3].ToString();
-                        clientData.EndDateTime = reader[4].ToString();
-                        //clientData.StartDateTime = Convert.ToDateTime(reader[3].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
-                        //clientData.EndDateTime = Convert.ToDateTime(reader[4].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
+                        //clientData.StartDateTime = reader[3].ToString();
+                        //clientData.EndDateTime = reader[4].ToString();
+                        clientData.StartDateTime = Convert.ToDateTime(reader[3].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
+                        clientData.EndDateTime = Convert.ToDateTime(reader[4].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
 
                         clientDataList.Add(clientData);
                     }
