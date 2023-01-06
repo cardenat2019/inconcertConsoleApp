@@ -26,7 +26,10 @@ namespace ConsoleApp.BP
                 if (dataPostMerge.baseDataPosts.Count > 0)
                 {
                     apiPost(dataPostMerge.baseDataPosts, dataPostMerge.baseDataPostContacts, clientData, valoresResultados).GetAwaiter().GetResult();
-                    // Envio de correos
+                }
+                else
+                {
+                    updateProcessDateTipification(clientData.RecordId);
                 }
             }
         }
@@ -58,6 +61,7 @@ namespace ConsoleApp.BP
                         //clientData.EndDateTime = reader[4].ToString();
                         clientData.StartDateTime = Convert.ToDateTime(reader[3].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
                         clientData.EndDateTime = Convert.ToDateTime(reader[4].ToString()).ToString("yyyy-MM-dd HH:mm:ss");
+                        clientData.RecordId = Int32.Parse(reader[5].ToString());
 
                         clientDataList.Add(clientData);
                     }
@@ -629,7 +633,7 @@ namespace ConsoleApp.BP
                                 }
                             }
                         }
-                        updateProcessDateTipification(clientData.Id);
+                        updateProcessDateTipification(clientData.RecordId);
                         // Envia correos
                         sendMailWithFile(clientData, mailConfigList);
                     }

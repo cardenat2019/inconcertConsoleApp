@@ -13,6 +13,6 @@ namespace ConsoleApp.Models
         public string Campaign { get; set; }
         public string StartDateTime { get; set; }
         public string EndDateTime { get; set; }
-
+        public int RecordId { get; set; }
     }
 }
